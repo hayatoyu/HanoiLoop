@@ -36,6 +36,8 @@ namespace HanoiLoop
             Pillar_A.Clear();
             Pillar_B.Clear();
             Pillar_C.Clear();
+            count = 0;
+            maxMove = 0;
         }
 
         private void CompareMove(Stack<int> X,Stack<int> Y,string XName,string YName)
