@@ -26,139 +26,9 @@ namespace HanoiLoop
             for (int i = n; i > 0; i--)
                 Pillar_A.Push(i);
 
-            if ((n & 1) == 0)
-                evenDisks(n);
-            else
-                oddDisks(n);
+            Move(n);
 
             ClearPillars();
-        }
-
-        private void oddDisks(int n)
-        {
-            int disk = 0;
-            double count = 0;
-            //for(int i = 0;i < maxMove;i++)
-            while(true)
-            {
-                // Move Between A and C
-                if(CompareMove(Pillar_C,Pillar_A))
-                {
-                    disk = Pillar_A.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'A', 'C');
-                    Pillar_C.Push(disk);
-                    count++;
-                }
-                else if (CompareMove(Pillar_A,Pillar_C))
-                {
-                    disk = Pillar_C.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'C', 'A');
-                    Pillar_A.Push(disk);
-                    count++;
-                }
-                if (count >= maxMove)
-                    break;
-
-                // Move Between A and B
-                if(CompareMove(Pillar_B,Pillar_A))
-                {
-                    disk = Pillar_A.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'A', 'B');
-                    Pillar_B.Push(disk);
-                    count++;
-                }
-                else if (CompareMove(Pillar_A,Pillar_B))
-                {
-                    disk = Pillar_B.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'B', 'A');
-                    Pillar_A.Push(disk);
-                    count++;
-                }
-                if (count >= maxMove)
-                    break;
-
-                // Move Between B and C
-                if(CompareMove(Pillar_C,Pillar_B))
-                {
-                    disk = Pillar_B.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'B', 'C');
-                    Pillar_C.Push(disk);
-                    count++;
-                }
-                else if (CompareMove(Pillar_B,Pillar_C))
-                {
-                    disk = Pillar_C.Pop();
-                    Console.WriteLine(MoveMessage,disk, 'C', 'B');
-                    Pillar_B.Push(disk);
-                    count++;
-                }
-                if (count >= maxMove)
-                    break;
-            }
-        }
-
-        private void evenDisks(int n)
-        {
-            int disk = 0;
-            double count = 0;
-            //for(int i = 0;i < maxMove;i++)
-            while(true)
-            {
-                // Move Between A and B
-                if(CompareMove(Pillar_B,Pillar_A))
-                {
-                    disk = Pillar_A.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'A', 'B');
-                    Pillar_B.Push(disk);
-                    count++;
-                }
-                else if (CompareMove(Pillar_A,Pillar_B))
-                {
-                    disk = Pillar_B.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'B', 'A');
-                    Pillar_A.Push(disk);
-                    count++;
-                }
-                if (count >= maxMove)
-                    break;
-
-
-                // Move Between A and C
-                if(CompareMove(Pillar_C,Pillar_A))
-                {
-                    disk = Pillar_A.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'A', 'C');
-                    Pillar_C.Push(disk);
-                    count++;
-                }
-                else if (CompareMove(Pillar_A,Pillar_C))
-                {
-                    disk = Pillar_C.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'C', 'A');
-                    Pillar_A.Push(disk);
-                    count++;
-                }
-                if (count >= maxMove)
-                    break;
-
-                // Move Between B and C
-                if(CompareMove(Pillar_C,Pillar_B))
-                {
-                    disk = Pillar_B.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'B', 'C');
-                    Pillar_C.Push(disk);
-                    count++;
-                }
-                else if (CompareMove(Pillar_B,Pillar_C))
-                {
-                    disk = Pillar_C.Pop();
-                    Console.WriteLine(MoveMessage, disk, 'C', 'B');
-                    Pillar_B.Push(disk);
-                    count++;
-                }
-                if (count >= maxMove)
-                    break;
-            }
         }
 
         private void ClearPillars()
@@ -168,14 +38,73 @@ namespace HanoiLoop
             Pillar_C.Clear();
         }
 
-        private bool CompareMove(Stack<int> X,Stack<int> Y)
+        private void CompareMove(Stack<int> X,Stack<int> Y,string XName,string YName)
         {
-            if (X.Count == 0)
-                return true;
-            else if (Y.Count > 0 && (X.Peek() > Y.Peek()))
-                return true;
-            return false;
-
+            int disk = 0;
+            if(X.Count == 0)
+            {
+                disk = Y.Pop();
+                Console.WriteLine(MoveMessage, disk, YName, XName);
+                X.Push(disk);
+                count++;
+            }
+            else if (Y.Count == 0)
+            {
+                disk = X.Pop();
+                Console.WriteLine(MoveMessage, disk, XName, YName);
+                Y.Push(disk);
+                count++;
+            }
+            else if (X.Peek() < Y.Peek())
+            {
+                disk = X.Pop();
+                Console.WriteLine(MoveMessage, disk, XName, YName);
+                Y.Push(disk);
+                count++;
+            }
+            else if (Y.Peek() < X.Peek())
+            {
+                disk = Y.Pop();
+                Console.WriteLine(MoveMessage, disk, YName, XName);
+                X.Push(disk);
+                count++;
+            }
         }
+
+        private void Move(int n)
+        {            
+            if((n & 1) == 0)
+            {
+                while (true)
+                {
+                    CompareMove(Pillar_A, Pillar_B,nameof(Pillar_A),nameof(Pillar_B));
+                    if (count >= maxMove)
+                        break;
+                    CompareMove(Pillar_A, Pillar_C,nameof(Pillar_A),nameof(Pillar_C));
+                    if (count >= maxMove)
+                        break;
+                    CompareMove(Pillar_B, Pillar_C,nameof(Pillar_B),nameof(Pillar_C));
+                    if (count >= maxMove)
+                        break;
+                }
+            }
+            else
+            {
+                while(true)
+                {
+                    CompareMove(Pillar_A, Pillar_C,nameof(Pillar_A),nameof(Pillar_C));
+                    if (count >= maxMove)
+                        break;
+                    CompareMove(Pillar_A, Pillar_B,nameof(Pillar_A),nameof(Pillar_B));
+                    if (count >= maxMove)
+                        break;
+                    CompareMove(Pillar_B, Pillar_C,nameof(Pillar_B),nameof(Pillar_C));
+                    if (count >= maxMove)
+                        break;
+                }
+            }
+        }
+
+        
     }
 }
