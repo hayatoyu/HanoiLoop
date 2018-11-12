@@ -10,7 +10,7 @@ namespace HanoiLoop
     {
         Stack<int> Pillar_A, Pillar_B, Pillar_C;
         double maxMove = 0,count = 0;
-        string MoveMessage = "Move disk {0} from {1} to {2}";
+        string MoveMessage = "Step {0} : Move disk {1} from {2} to {3}";
 
         public HanoiTower()
         {
@@ -45,31 +45,31 @@ namespace HanoiLoop
             int disk = 0;
             if(X.Count == 0)
             {
-                disk = Y.Pop();
-                Console.WriteLine(MoveMessage, disk, YName, XName);
-                X.Push(disk);
                 count++;
+                disk = Y.Pop();
+                Console.WriteLine(MoveMessage,count,disk, YName, XName);
+                X.Push(disk);                
             }
             else if (Y.Count == 0)
             {
-                disk = X.Pop();
-                Console.WriteLine(MoveMessage, disk, XName, YName);
-                Y.Push(disk);
                 count++;
+                disk = X.Pop();
+                Console.WriteLine(MoveMessage,count, disk, XName, YName);
+                Y.Push(disk);                
             }
             else if (X.Peek() < Y.Peek())
             {
-                disk = X.Pop();
-                Console.WriteLine(MoveMessage, disk, XName, YName);
-                Y.Push(disk);
                 count++;
+                disk = X.Pop();
+                Console.WriteLine(MoveMessage,count, disk, XName, YName);
+                Y.Push(disk);                
             }
             else if (Y.Peek() < X.Peek())
             {
-                disk = Y.Pop();
-                Console.WriteLine(MoveMessage, disk, YName, XName);
-                X.Push(disk);
                 count++;
+                disk = Y.Pop();
+                Console.WriteLine(MoveMessage,count, disk, YName, XName);
+                X.Push(disk);                
             }
         }
 
